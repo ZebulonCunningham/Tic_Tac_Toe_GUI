@@ -2,11 +2,10 @@ package edu.jsu.mcis;
 
 public class TicTacToeModel{
 	public int[][] grid; 
-	private boolean gameOn;
-	private boolean playerX; 
-	private boolean gameWon; 
+	private boolean playerX;  
 	private boolean tieGame;
 	public int turnCounter; 
+	public String winMessage; 
 
 	public TicTacToeModel(){
 		grid = new int[3][3];
@@ -20,7 +19,7 @@ public class TicTacToeModel{
 		else if(grid[row][col] == 1){
 			return "X";
 		}
-		else return "O";
+		else return "O";		
 	}
 
 	public void makeMark(String mark, int row, int col){
@@ -52,46 +51,64 @@ public class TicTacToeModel{
 		else return false; 
 	}
 
-	public boolean checkHorizonal(){
-		for(int j = 0; j < 3; j++){
-			if(getMark(0, j).equals("X") || getMark(0, j).equals("O")){
-				gameWon = true;
-			}
-			else if(getMark(1, j).equals("X") || getMark(1, j).equals("O")){
-				gameWon = true; 
-			}
-			else if(getMark(2, j).equals("X") || getMark(2, j).equals("O")){
-				gameWon = true; 
-			}
-			else gameWon = false; 
+	public String checkHorizonal(){ // this is not complete. How to convert bool to string?
+		if(grid[0][0] == grid[0][1] && grid[0][0] == grid[0][2] && grid[0][0] != 0){
+			winMessage = getMark(0,0); 
 		}
-		return gameWon;
+		if(grid[1][0] == grid[1][1] && grid[1][0] == grid[1][2] && grid[1][0] != 0){
+			winMessage = getMark(1,0);
+		}
+		if(grid[2][0] == grid[2][1] && grid[2][0] == grid[2][2] && grid[2][0] != 0){
+			winMessage = getMark(2,0);
+		}
+		return winMessage;
 	}
 
-	public boolean checkVertical(){
+	public String checkVertical(){
 		for(int i = 0; i < 3; i++){
-			if(getMark(i, 0).equals("X") || getMark(i, 0).equals("O")){
-				gameWon = true; 
+			if(getMark(i, 0).equals("X") || getMark(i, 0).equals("O")){ 
+				winMessage = getMark(i,0);
 			}
 			else if(getMark(i, 1).equals("X") || getMark(i, 1).equals("O")){
-				gameWon = true; 
+				winMessage = getMark(i,1);
 			}
 			else if(getMark(i, 2).equals("X") || getMark(i, 2).equals("O")){
-				gameWon = true; 
+				winMessage = getMark(i,2);
 			}
-			else gameWon = false; 
 		}
-		return gameWon; 
+		return winMessage; 
 	}
 
-	public boolean checkTieGame(){  
+	public String checkDiagonal(){
+		if(grid[0][0] == grid[1][1] && grid[0][0] == grid[2][2] && grid[0][0] != 0){
+			winMessage = getMark(0,0); 
+		}
+		else if(grid[2][0] == grid[1][1] && grid[2][0] == grid[0][2] && grid[2][0] != 0){
+			winMessage = getMark(2,0); 
+		}
+		return winMessage; 
+	}
+
+	public String checkTieGame(){  
 		for(int i = 0; i < 3; i++){
 			for(int j = 0; j < 3; j++){
-				if(grid[i][j] == 2){
-					tieGame = false; 
+				if(grid[i][j] == 2 || grid[i][j] == 1){
+					winMessage = "TIE"; 
 				}
 			}
 		}
-		return true; 
+		return winMessage; 
+	}
+
+	public String checkWinner(){
+		if(turnCounter != 9){
+			checkDiagonal();
+			checkVertical();
+			checkHorizonal();
+		}		
+		else if(turnCounter == 9){
+			checkTieGame();
+		}		 
+		return winMessage; 
 	}
 }

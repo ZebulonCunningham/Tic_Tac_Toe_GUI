@@ -50,7 +50,7 @@ public class TicTacToeTest {
 		model.makeMark("X", 0, 0);
 		model.makeMark("X", 0, 1);
 		model.makeMark("X", 0, 2);
-		assertTrue(model.checkHorizonal());
+		assertEquals("X", model.checkHorizonal());
 	}
 	
 	@Test
@@ -64,6 +64,22 @@ public class TicTacToeTest {
 		model.makeMark("O", 1, 2);
 		model.makeMark("O", 2, 0);
 		model.makeMark("O", 2, 2); 
-		assertTrue(model.checkTieGame());
+		assertEquals("TIE", model.checkTieGame());
 	}	
+
+	@Test
+	public void testGameIsWonByXDiagonallyFromTopLeft(){
+		model.makeMark("X", 0, 0);
+		model.makeMark("X", 1, 1);
+		model.makeMark("X", 2, 2);
+		assertEquals("X", model.checkDiagonal());
+	}
+
+	@Test
+	public void testGameIsWonByODiagonallyFromBottomLeft(){
+		model.makeMark("O", 2, 0);
+		model.makeMark("O", 1, 1);
+		model.makeMark("O", 0, 2);
+		assertEquals("O", model.checkDiagonal());
+	}
 }
